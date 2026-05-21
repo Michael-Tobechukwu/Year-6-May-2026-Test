@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Threats & Risks — Year 6 Test</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --blue-50:#E6F1FB;--blue-400:#378ADD;--blue-700:#185FA5;--blue-900:#042C53;
+  --teal-400:#1D9E75;--green-600:#3B6D11;--red-700:#A32D2D;
+  --gray-100:#D3D1C7;--text:#1C1C1A;--text-muted:#5F5E5A;
+  --bg:#F7F6F2;--surface:#fff;--surface2:#F1EFE8;
+  --border:rgba(0,0,0,0.1);--border-md:rgba(0,0,0,0.18);
+  --radius-lg:14px;--radius-xl:20px;
+}
+
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);padding-bottom:4rem}
+
+.hero{
+  background:linear-gradient(135deg,#B5D4F4,#9FE1CB,#FAC775);
+  padding:2rem 1.5rem;
+}
+.hero-inner{max-width:780px;margin:auto}
+.hero-title{font-family:'Fredoka One',cursive;font-size:32px;color:var(--blue-900)}
+.hero-sub{font-weight:600;color:var(--blue-700);margin-top:5px}
+
+.progress-wrap{max-width:780px;margin:auto;padding:1rem 1.5rem}
+.progress-track{height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal-400),var(--blue-400));transition:.3s}
+
+.main{max-width:780px;margin:auto;padding:1.5rem}
+
+.info-card{background:#fff;border:2px solid var(--blue-400);padding:1.5rem;border-radius:var(--radius-xl);margin-bottom:1.5rem}
+
+.field-label{font-size:12px;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;display:block}
+
+.name-input{width:100%;padding:10px;border:1px solid var(--border-md);border-radius:10px;margin-bottom:12px}
+
+.q-card{background:#fff;border:1px solid var(--border);padding:1.2rem;border-radius:12px;margin-bottom:12px}
+
+.q-num{font-size:11px;color:var(--text-muted);font-weight:700;margin-bottom:6px}
+
+.q-text{font-weight:600;margin-bottom:10px;line-height:1.5}
+
+.opt-btn{
+  width:100%;text-align:left;padding:10px;
+  border:1px solid var(--border-md);
+  border-radius:10px;margin-bottom:6px;
+  background:#fff;cursor:pointer;
+}
+
+.opt-btn.selected{background:var(--blue-50);border-color:var(--blue-400)}
+
+.submit-btn{
+  width:100%;padding:15px;
+  background:var(--blue-400);color:#fff;
+  border:none;border-radius:12px;
+  font-size:18px;font-family:'Fredoka One';
+  cursor:pointer;
+}
+
+.score-panel{display:none;max-width:780px;margin:auto;padding:1.5rem}
+.score-card{background:#fff;padding:2rem;border-radius:20px;text-align:center}
+
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-title">AI Threats & Risks Test</div>
+    <div class="hero-sub">Year 6 · ICT & Digital Safety</div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div id="progText">0 of 10 answered</div>
+  <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
+</div>
+
+<main class="main">
+
+<div class="info-card">
+  <label class="field-label">Full Name</label>
+  <input class="name-input" id="name">
+
+  <label class="field-label">Class</label>
+  <select id="class">
+    <option value="">Select Class</option>
+    <option>Year 5 Emerald</option>
+    <option>Year 5 Sapphire</option>
+  </select>
+</div>
+
+<div id="quiz"></div>
+
+<button class="submit-btn" onclick="submitTest()">Submit Test</button>
+
+</main>
+
+<div class="score-panel" id="scorePanel">
+  <div class="score-card">
+    <h2 id="result"></h2>
+  </div>
+</div>
+
+<script>
+
+const TOTAL = 10;
+
+const QUESTIONS = [
+{q:"AI threats are considered different because AI systems can ____.",
+opts:["only work during the day","think and spread information quickly on a large scale","stop functioning without electricity","only affect one person"],ans:1},
+
+{q:"Which situation shows AI threats can scale easily?",
+opts:["One student lies","AI spreads false info to millions quickly","Teacher writes notes","Student forgets password"],ans:1},
+
+{q:"AI threats are often invisible means ____.",
+opts:["AI cannot be seen","happen secretly without users noticing","AI works underground","screens go black"],ans:1},
+
+{q:"A fake video of an athlete is an example of ____.",
+opts:["AI hallucination","AI sycophancy","Deepfake","AI scaling"],ans:2},
+
+{q:"Deepfake clue?",
+opts:["Clear sound","Unnatural facial movement","Short video","Shared online"],ans:1},
+
+{q:"AI hallucination is when AI ____.",
+opts:["refuses to answer","creates false info as real","becomes self-aware","copies homework"],ans:1},
+
+{q:"Why is hallucination harmful?",
+opts:["trust wrong information","reduces internet usage","stops computers","only affects games"],ans:0},
+
+{q:"Which needs most careful AI trust?",
+opts:["alarm","movie","medical advice","music"],ans:2},
+
+{q:"Chatbot agreeing with wrong idea is ____.",
+opts:["hallucination","bias","sycophancy","deepfake"],ans:2},
+
+{q:"AI bias means ____.",
+opts:["always correct","favouring unfair ideas","no internet","faster AI"],ans:1}
+];
+
+let answers={};
+
+function build(){
+const qDiv=document.getElementById("quiz");
+QUESTIONS.forEach((x,i)=>{
+let html=`<div class="q-card">
+<div class="q-num">Question ${i+1}</div>
+<div class="q-text">${x.q}</div>`;
+
+x.opts.forEach((o,j)=>{
+html+=`<button class="opt-btn" onclick="pick(${i},${j},this)">${String.fromCharCode(97+j)}. ${o}</button>`;
+});
+
+html+=`</div>`;
+qDiv.innerHTML+=html;
+});
+}
+
+function pick(q,i,el){
+answers[q]=i;
+el.parentNode.querySelectorAll(".opt-btn").forEach(b=>b.classList.remove("selected"));
+el.classList.add("selected");
+update();
+}
+
+function update(){
+let c=Object.keys(answers).length;
+document.getElementById("progText").innerText=`${c} of ${TOTAL} answered`;
+document.getElementById("bar").style.width=(c/TOTAL*100)+"%";
+}
+
+function submitTest(){
+let score=0;
+QUESTIONS.forEach((q,i)=>{
+if(answers[i]===q.ans)score++;
+});
+
+document.getElementById("scorePanel").style.display="block";
+document.getElementById("result").innerText=`Score: ${score}/${TOTAL}`;
+}
+
+build();
+</script>
+
+</body>
+</html>
