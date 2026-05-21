@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Analysis with Excel — Summative Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue-50: #E6F1FB; --blue-200: #85B7EB; --blue-400: #378ADD;
+    --blue-700: #185FA5; --blue-900: #042C53;
+    --teal-50: #E1F5EE; --teal-400: #1D9E75; --teal-800: #085041;
+    --green-50: #EAF3DE; --green-600: #3B6D11; --green-900: #173404;
+    --amber-50: #FAEEDA; --amber-800: #633806;
+    --pink-50: #FBEAF0; --pink-800: #72243E;
+    --red-50: #FCEBEB; --red-700: #A32D2D; --red-900: #501313;
+    --gray-100: #D3D1C7; --gray-500: #5F5E5A;
+    --bg: #F7F6F2; --surface: #FFFFFF; --surface2: #F1EFE8;
+    --border: rgba(0,0,0,0.10); --border-md: rgba(0,0,0,0.18);
+    --text: #1C1C1A; --text-muted: #5F5E5A; --text-hint: #888780;
+    --radius-md: 10px; --radius-lg: 14px; --radius-xl: 20px;
+    --emerald: #1D9E75; --sapphire: #378ADD;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 4rem; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #B5D4F4 0%, #9FE1CB 60%, #FAC775 100%);
+    padding: 2.5rem 1.5rem 2rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';position:absolute;inset:0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.12'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-inner { max-width: 780px; margin: 0 auto; position: relative; }
+  .hero-eyebrow {
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(255,255,255,0.45);border-radius:999px;padding:4px 14px;
+    font-size:12px;font-weight:700;color:var(--blue-900);letter-spacing:.6px;
+    text-transform:uppercase;margin-bottom:14px;
+  }
+  .hero-title { font-family:'Fredoka One',cursive;font-size:clamp(26px,5vw,38px);color:var(--blue-900);line-height:1.1;margin-bottom:8px; }
+  .hero-sub { font-size:14px;font-weight:600;color:var(--blue-700);margin-bottom:1.5rem; }
+  .hero-meta { display:flex;gap:12px;flex-wrap:wrap; }
+  .meta-pill { background:rgba(255,255,255,0.5);border-radius:999px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--blue-900); }
+  .cake-deco { position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:90px;opacity:.22;line-height:1;user-select:none; }
+
+  /* PROGRESS */
+  .progress-wrap { max-width:780px;margin:0 auto;padding:1rem 1.5rem 0; }
+  .progress-row { display:flex;justify-content:space-between;align-items:center;margin-bottom:6px; }
+  .progress-label { font-size:13px;font-weight:600;color:var(--text-muted); }
+  .progress-pct { font-size:13px;font-weight:800;color:var(--blue-700); }
+  .progress-track { background:var(--gray-100);border-radius:999px;height:9px;overflow:hidden; }
+  .progress-fill { height:100%;background:linear-gradient(90deg,var(--teal-400),var(--blue-400));border-radius:999px;transition:width .4s cubic-bezier(.4,0,.2,1);width:0%; }
+
+  /* MAIN */
+  .main { max-width:780px;margin:0 auto;padding:1.5rem 1.5rem 0; }
+
+  /* STUDENT INFO CARD */
+  .info-card {
+    background: var(--surface);
+    border: 2px solid var(--blue-400);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.75rem;
+    position: relative;
+  }
+  .info-card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    color: var(--blue-900);
+    margin-bottom: 4px;
+  }
+  .info-card-sub { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-bottom: 1.25rem; }
+
+  .field-group { margin-bottom: 1.1rem; }
+  .field-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+  }
+  .field-required { color: var(--red-700); margin-left: 2px; }
+
+  .name-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border-md);
+    border-radius: var(--radius-md);
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--surface);
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+  }
+  .name-input:focus { border-color: var(--blue-400); box-shadow: 0 0 0 3px rgba(55,138,221,0.12); }
+  .name-input.error { border-color: var(--red-700); box-shadow: 0 0 0 3px rgba(163,45,45,0.10); }
+  .name-input:disabled { background: var(--surface2); color: var(--text-hint); }
+
+  /* CLASS RADIO */
+  .class-options { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .class-radio-label {
+    flex: 1;
+    min-width: 160px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .class-radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+
+  .class-radio-label input[type="radio"]:disabled + .class-radio-box { cursor: default; opacity: .7; }
+
+  .class-radio-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border-md);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    transition: border-color .2s, background .2s, box-shadow .2s;
+    user-select: none;
+  }
+
+  .class-radio-label:hover .class-radio-box { background: var(--surface2); border-color: var(--border-md); }
+  .class-radio-label input:checked + .class-radio-box.emerald { border-color: var(--emerald); background: #E1F5EE; box-shadow: 0 0 0 3px rgba(29,158,117,.10); }
+  .class-radio-label input:checked + .class-radio-box.sapphire { border-color: var(--sapphire); background: var(--blue-50); box-shadow: 0 0 0 3px rgba(55,138,221,.10); }
+
+  .class-dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--border-md);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .2s, background .2s;
+  }
+  .class-radio-label input:checked + .class-radio-box.emerald .class-dot { border-color: var(--emerald); background: var(--emerald); }
+  .class-radio-label input:checked + .class-radio-box.sapphire .class-dot { border-color: var(--sapphire); background: var(--sapphire); }
+  .class-dot::after {
+    content: ''; width: 7px; height: 7px; border-radius: 50%; background: white; opacity: 0; transition: opacity .15s;
+  }
+  .class-radio-label input:checked + .class-radio-box .class-dot::after { opacity: 1; }
+
+  .class-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .class-sub  { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-top: 1px; }
+
+  .class-radio-label input:checked + .class-radio-box.emerald .class-name { color: #085041; }
+  .class-radio-label input:checked + .class-radio-box.sapphire .class-name { color: var(--blue-900); }
+
+  .info-error { font-size: 12px; color: var(--red-700); font-weight: 700; margin-top: 5px; display: none; }
+  .info-error.show { display: block; }
+
+  /* SECTION DIVIDER */
+  .section-div { display:flex;align-items:center;gap:12px;margin:1.75rem 0 1rem; }
+  .section-div-line { flex:1;height:1px;background:var(--border); }
+  .section-div-label { font-size:11px;font-weight:800;color:var(--text-hint);letter-spacing:.9px;text-transform:uppercase;white-space:nowrap;padding:0 4px; }
+
+  /* QUESTION CARD */
+  .q-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem;transition:border-color .2s; }
+  .q-card.answered { border-color:var(--border-md); }
+  .q-card.correct-card { border-left:3px solid var(--green-600); }
+  .q-card.wrong-card   { border-left:3px solid var(--red-700); }
+  .q-meta { display:flex;align-items:center;gap:8px;margin-bottom:8px; }
+  .q-num  { font-size:11px;font-weight:800;color:var(--text-hint);letter-spacing:.5px;text-transform:uppercase; }
+  .q-badge { display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase; }
+  .badge-recall     { background:var(--blue-50);   color:var(--blue-700); }
+  .badge-understand { background:var(--teal-50);   color:var(--teal-800); }
+  .badge-apply      { background:var(--amber-50);  color:var(--amber-800); }
+  .badge-practical  { background:var(--pink-50);   color:var(--pink-800); }
+  .q-text { font-size:15px;font-weight:600;color:var(--text);line-height:1.55;margin-bottom:1rem; }
+  .q-text .blank { display:inline-block;min-width:90px;border-bottom:2px solid var(--blue-400);color:var(--blue-400);font-style:italic; }
+
+  /* SALES TABLE */
+  .sales-table { width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 14px;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border); }
+  .sales-table th { background:var(--surface2);padding:7px 12px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);border-bottom:1px solid var(--border); }
+  .sales-table td { padding:6px 12px;border-bottom:1px solid var(--border);color:var(--text); }
+  .sales-table tr:last-child td { border-bottom:none; }
+  .sales-table tr:nth-child(even) td { background:#FAFAF8; }
+
+  /* OPTIONS */
+  .options { display:grid;gap:8px; }
+  .opt-btn { display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid var(--border-md);border-radius:var(--radius-md);background:var(--surface);cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);line-height:1.4;transition:background .13s,border-color .13s,transform .1s;width:100%; }
+  .opt-btn:hover:not(:disabled) { background:var(--surface2);border-color:var(--blue-200);transform:translateX(2px); }
+  .opt-btn:disabled { cursor:default; }
+  .opt-btn.selected { background:var(--blue-50);border-color:var(--blue-400);color:var(--blue-900); }
+  .opt-btn.correct  { background:var(--green-50);border-color:var(--green-600);color:var(--green-900); }
+  .opt-btn.wrong    { background:var(--red-50);border-color:var(--red-700);color:var(--red-900); }
+  .opt-letter { flex-shrink:0;width:23px;height:23px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--text-muted);margin-top:1px; }
+  .opt-btn.selected .opt-letter { background:var(--blue-400);color:#fff; }
+  .opt-btn.correct  .opt-letter { background:var(--green-600);color:#fff; }
+  .opt-btn.wrong    .opt-letter { background:var(--red-700);color:#fff; }
+
+  /* FEEDBACK */
+  .feedback { margin-top:10px;padding:9px 13px;border-radius:var(--radius-md);font-size:13px;font-weight:600;line-height:1.5;display:none; }
+  .feedback.show { display:block; }
+  .feedback.fb-correct { background:var(--green-50);color:#27500A; }
+  .feedback.fb-wrong   { background:var(--red-50);color:#791F1F; }
+
+  /* SUBMIT */
+  .submit-area { max-width:780px;margin:1.5rem auto 0;padding:0 1.5rem; }
+  .submit-btn { display:block;width:100%;padding:16px;background:var(--blue-400);color:#fff;border:none;border-radius:var(--radius-lg);font-family:'Fredoka One',cursive;font-size:20px;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.3px; }
+  .submit-btn:hover { background:var(--blue-700); }
+  .submit-btn:active { transform:scale(0.99); }
+  .submit-btn:disabled { background:var(--gray-100);color:var(--text-hint);cursor:not-allowed; }
+
+  /* SCORE PANEL */
+  .score-panel { max-width:780px;margin:1.5rem auto 0;padding:0 1.5rem;display:none; }
+  .score-panel.show { display:block; }
+  .score-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:2rem 1.75rem;text-align:center; }
+  .score-emoji { font-size:48px;margin-bottom:12px; }
+  .score-pupil { font-size:14px;font-weight:700;color:var(--text-muted);margin-bottom:6px; }
+  .score-number { font-family:'Fredoka One',cursive;font-size:56px;color:var(--text);line-height:1; }
+  .score-pct   { font-size:22px;font-weight:800;color:var(--blue-700);margin:4px 0; }
+  .score-grade { font-size:15px;color:var(--text-muted);font-weight:600;margin-bottom:1.5rem; }
+  .stats-grid  { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem; }
+  .stat-box    { background:var(--surface2);border-radius:var(--radius-md);padding:1rem .75rem; }
+  .stat-val { font-size:26px;font-weight:800; }
+  .stat-val.green { color:var(--green-600); }
+  .stat-val.red   { color:var(--red-700); }
+  .stat-val.amber { color:#BA7517; }
+  .stat-lbl { font-size:12px;color:var(--text-muted);margin-top:2px;font-weight:600; }
+  .section-breakdown { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem;text-align:left; }
+  .breakdown-row { background:var(--surface2);border-radius:var(--radius-md);padding:10px 14px;display:flex;justify-content:space-between;align-items:center; }
+  .breakdown-label { font-size:12px;font-weight:700;color:var(--text-muted); }
+  .breakdown-score { font-size:14px;font-weight:800;color:var(--text); }
+
+  /* SUBMISSION STATUS */
+  .sub-status {
+    display: none;
+    margin-top: 1rem;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+  .sub-status.show { display: flex; }
+  .sub-status.sending { background: var(--blue-50); color: var(--blue-700); }
+  .sub-status.success { background: var(--green-50); color: #27500A; }
+  .sub-status.failed  { background: var(--amber-50); color: var(--amber-800); }
+
+  .reset-btn { display:block;width:100%;padding:12px;background:transparent;color:var(--text-muted);border:1px solid var(--border-md);border-radius:var(--radius-md);font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s;margin-top:10px; }
+  .reset-btn:hover { background:var(--surface2); }
+
+  /* SETUP BANNER */
+  .setup-banner {
+    background: #FAEEDA;
+    border: 1.5px dashed #BA7517;
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    margin-bottom: 1.5rem;
+    font-size: 13px;
+    color: var(--amber-800);
+    line-height: 1.6;
+  }
+  .setup-banner strong { font-weight: 800; }
+  .setup-banner code {
+    background: rgba(0,0,0,0.07);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 12px;
+    font-family: monospace;
+  }
+  .setup-banner a { color: var(--blue-700); }
+
+  @media (max-width: 520px) {
+    .hero { padding:1.75rem 1rem 1.5rem; }
+    .main,.progress-wrap,.submit-area,.score-panel { padding-left:1rem;padding-right:1rem; }
+    .section-breakdown { grid-template-columns:1fr; }
+    .cake-deco { font-size:60px; }
+    .class-options { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">🎂 Sweet Layers Cake Co. Edition</div>
+    <h1 class="hero-title">Data Analysis with Excel</h1>
+    <p class="hero-sub">Summative Test &nbsp;·&nbsp; Year 6 &nbsp;·&nbsp; Ages 11–12</p>
+    <div class="hero-meta">
+      <span class="meta-pill">📝 20 Questions</span>
+      <span class="meta-pill">🧠 4 Skills Tested</span>
+      <span class="meta-pill">📊 All Topics Covered</span>
+    </div>
+    <div class="cake-deco" aria-hidden="true">🎂</div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label" id="progLabel">0 of 20 answered</span>
+    <span class="progress-pct" id="progPct">0%</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+</div>
+
+<main class="main">
+
+  <!-- ── SETUP BANNER (remove once script URL is set) ── -->
+  <div class="setup-banner" id="setupBanner">
+    <strong>⚙️ Teacher Setup Required:</strong> To collect submissions in Google Sheets, replace <code>YOUR_APPS_SCRIPT_URL_HERE</code> near the bottom of this file with your Google Apps Script Web App URL.
+    See the included <strong>SETUP INSTRUCTIONS</strong> in the file comments, or read the step-by-step guide provided with this file.
+    Once set up, this banner will disappear automatically. <a href="#" onclick="document.getElementById('setupBanner').style.display='none';return false;">Hide for now</a>
+  </div>
+
+  <!-- ── STUDENT INFO ── -->
+  <div class="info-card" id="infoCard">
+    <div class="info-card-title">👤 Your Details</div>
+    <div class="info-card-sub">Fill in your name and select your class before starting the test.</div>
+
+    <div class="field-group">
+      <label class="field-label" for="studentName">Full Name <span class="field-required">*</span></label>
+      <input class="name-input" type="text" id="studentName" placeholder="e.g. Amara Okonkwo" autocomplete="name" spellcheck="false">
+      <div class="info-error" id="nameError">Please enter your full name to continue.</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Class <span class="field-required">*</span></label>
+      <div class="class-options">
+
+        <label class="class-radio-label">
+          <input type="radio" name="studentClass" value="Year 6 Emerald" id="classEmerald">
+          <div class="class-radio-box emerald">
+            <div class="class-dot"></div>
+            <div>
+              <div class="class-name">Year 6 Emerald</div>
+              <div class="class-sub">Green group</div>
+            </div>
+          </div>
+        </label>
+
+        <label class="class-radio-label">
+          <input type="radio" name="studentClass" value="Year 6 Sapphire" id="classSapphire">
+          <div class="class-radio-box sapphire">
+            <div class="class-dot"></div>
+            <div>
+              <div class="class-name">Year 6 Sapphire</div>
+              <div class="class-sub">Blue group</div>
+            </div>
+          </div>
+        </label>
+
+      </div>
+      <div class="info-error" id="classError">Please select your class to continue.</div>
+    </div>
+  </div>
+
+  <!-- ── QUESTIONS ── -->
+  <div id="questionContainer"></div>
+</main>
+
+<div class="submit-area">
+  <button class="submit-btn" id="submitBtn" onclick="submitTest()">Submit Test ✓</button>
+</div>
+
+<div class="score-panel" id="scorePanel">
+  <div class="score-card">
+    <div class="score-emoji" id="scoreEmoji"></div>
+    <div class="score-pupil" id="scorePupil"></div>
+    <div class="score-number" id="scoreNum"></div>
+    <div class="score-pct"    id="scorePct"></div>
+    <div class="score-grade"  id="scoreGrade"></div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-val green" id="statC">—</div><div class="stat-lbl">Correct</div></div>
+      <div class="stat-box"><div class="stat-val red"   id="statW">—</div><div class="stat-lbl">Incorrect</div></div>
+      <div class="stat-box"><div class="stat-val amber" id="statS">—</div><div class="stat-lbl">Skipped</div></div>
+    </div>
+    <div class="section-breakdown" id="breakdownGrid"></div>
+    <div class="sub-status sending" id="subStatus">
+      <span>⏳</span><span id="subStatusText">Sending your results…</span>
+    </div>
+    <button class="reset-btn" onclick="resetTest()">↺ Try Again</button>
+  </div>
+</div>
+
+<!--
+=============================================================
+  GOOGLE SHEETS SETUP INSTRUCTIONS
+=============================================================
+
+STEP 1 — Create a Google Sheet
+  • Go to sheets.google.com and create a new spreadsheet.
+  • Name it: "Data Analysis Test Results"
+  • In Row 1, add these exact headers in columns A–K:
+    Timestamp | Name | Class | Score | Percentage | Grade |
+    Sec A (Recall) | Sec B (Understanding) | Sec C (Application) |
+    Sec D (Practical) | Answers
+
+STEP 2 — Create a Google Apps Script
+  • In your Sheet, click Extensions → Apps Script.
+  • Delete all existing code and paste this:
+
+------- PASTE THIS INTO APPS SCRIPT -------
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    new Date(),
+    data.name,
+    data.studentClass,
+    data.score + "/20",
+    data.pct + "%",
+    data.grade,
+    data.secA,
+    data.secB,
+    data.secC,
+    data.secD,
+    data.answers
+  ]);
+  return ContentService
+    .createTextOutput(JSON.stringify({status:"ok"}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet() {
+  return ContentService.createTextOutput("Test results endpoint is running.");
+}
+
+------- END OF APPS SCRIPT CODE -------
+
+STEP 3 — Deploy as a Web App
+  • Click "Deploy" → "New deployment".
+  • Type: Web App.
+  • Description: Test Results Collector
+  • Execute as: Me
+  • Who has access: Anyone
+  • Click Deploy → Authorise → Copy the Web App URL.
+
+STEP 4 — Paste the URL below
+  • Find the line: const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+  • Replace YOUR_APPS_SCRIPT_URL_HERE with the URL you copied.
+  • Save and re-upload the file.
+
+=============================================================
+-->
+
+<script>
+// ── CONFIG: Replace with your Google Apps Script Web App URL ──
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv6j3xMsU47jzBIJY541n9EmAk0VphvWXJPqNMWUl5YIM-QHRWsRICRKpvdHwO7M3tKg/exec';
+
+const LETTERS = ['a','b','c','d'];
+
+const SECTIONS = [
+  {
+    key:'recall', label:'Section A — Recall & Memory',
+    badge:'badge-recall', badgeLabel:'Recall',
+    qs:[
+      {
+        q:'Data analysis is best described as the process of <span class="blank">___________</span> data in order to find useful information and support decision-making.',
+        opts:['Deleting unwanted','Inspecting and organising','Copying and printing','Formatting and colouring'],
+        ans:1, fb:'Data analysis means inspecting and organising data so we can discover patterns and make informed decisions.'
+      },
+      {
+        q:'Which of the following is an example of <strong>qualitative</strong> data?',
+        opts:['The number of banana cakes sold in a week','The total weight of a chocolate cake in grams','A customer\'s written review of a strawberry cake','The price of a red velvet slice in naira'],
+        ans:2, fb:'Qualitative data is non-numerical and descriptive. A written review captures opinions and feelings — not numbers.'
+      },
+      {
+        q:'Which type of data analysis <strong>summarises what happened in the past</strong> using historical data?',
+        opts:['Predictive analysis','Prescriptive analysis','Diagnostic analysis','Descriptive analysis'],
+        ans:3, fb:'Descriptive analysis looks back at past data to describe what has already happened — e.g. total cake sales last month.'
+      },
+      {
+        q:'The correct order of the basic steps in data analysis is: <span class="blank">___________</span>',
+        opts:['Collect → Clean → Define → Summarise → Interpret','Define → Collect → Clean → Summarise → Interpret','Clean → Define → Collect → Interpret → Summarise','Summarise → Collect → Clean → Define → Interpret'],
+        ans:1, fb:'You must first define your objective, then gather data, clean it, summarise it, and finally interpret the results.'
+      },
+      {
+        q:'Removing duplicate entries and fixing spelling errors in a spreadsheet is part of which step?',
+        opts:['Defining the objective','Gathering the data','Cleaning the data','Summarising the data'],
+        ans:2, fb:'Data cleaning is specifically about fixing errors, removing duplicates, and handling missing values before analysis begins.'
+      }
+    ]
+  },
+  {
+    key:'understand', label:'Section B — Understanding & Comprehension',
+    badge:'badge-understand', badgeLabel:'Understanding',
+    qs:[
+      {
+        q:'Diagnostic analysis differs from descriptive analysis because it focuses on <span class="blank">___________</span>.',
+        opts:['Predicting what will happen next month','Recommending actions to take in future','Explaining WHY something happened','Listing all the data that was collected'],
+        ans:2, fb:'Diagnostic analysis goes deeper — it investigates the cause or reason behind a result, not just what happened.'
+      },
+      {
+        q:'A student asks: "Is the number of red velvet cakes sold at a party <em>qualitative</em> or <em>quantitative</em>?" What is the correct answer and reason?',
+        opts:['Qualitative, because cakes are physical objects you can taste','Quantitative, because it is counted and expressed as a number','Qualitative, because it involves a special event like a party','Quantitative, because cake sales always use money'],
+        ans:1, fb:'Counting cakes gives a number (e.g. 24 cakes). Any data expressed as a measurable number is quantitative.'
+      },
+      {
+        q:'Which step of the data analysis process is described as the <strong>"core"</strong> — where patterns, totals, and trends are actually calculated?',
+        opts:['Defining the objective','Cleaning the data','Summarising the data','Gathering the data'],
+        ans:2, fb:'Summarising the data is the heart of analysis — this is where you calculate averages, totals, and identify trends in Excel.'
+      },
+      {
+        q:'Prescriptive analysis goes one step further than predictive analysis because it also <span class="blank">___________</span>.',
+        opts:['Collects the original sales records','Shows only a basic summary table','Counts and removes duplicate values','Suggests what specific action should be taken'],
+        ans:3, fb:'Prescriptive analysis not only predicts what might happen — it recommends what you should do about it.'
+      },
+      {
+        q:'A researcher conducts <strong>interviews</strong> with cake buyers and also records the <strong>number of cakes purchased</strong> per customer. Which statement is correct?',
+        opts:['Both the interview responses and purchase numbers are qualitative data','Both are quantitative data since they involve buying','Interview responses are qualitative; purchase numbers are quantitative','Interview responses are quantitative; purchase numbers are qualitative'],
+        ans:2, fb:'Interviews capture descriptive opinions (qualitative). Numbers of cakes purchased are countable measurements (quantitative). Both can exist in one study.'
+      }
+    ]
+  },
+  {
+    key:'apply', label:'Section C — Real-World Application',
+    badge:'badge-apply', badgeLabel:'Application',
+    qs:[
+      {
+        q:'A school wants to measure how satisfied pupils are with their lunch. Which type of data would <strong>best</strong> capture their feelings?',
+        opts:['Quantitative data from a weighing scale','Qualitative data from a written feedback form','Quantitative data from a stopwatch','Qualitative data from a temperature reading'],
+        ans:1, fb:'Feelings and satisfaction are best captured through descriptions and opinions — that is qualitative data from written feedback.'
+      },
+      {
+        q:'Before analysing a class attendance register, a teacher finds several names entered twice. What should she do <strong>first</strong>?',
+        opts:['Interpret the final results','Draw a chart immediately','Clean the data by removing the duplicates','Define a new objective'],
+        ans:2, fb:'Duplicate entries are errors that must be fixed during the data cleaning step — before any analysis takes place.'
+      },
+      {
+        q:'A student uses Excel to calculate the <strong>total and average marks</strong> for a class test. Which step of data analysis is this?',
+        opts:['Gathering the data','Defining the objective','Cleaning the data','Summarising the data'],
+        ans:3, fb:'Calculating totals and averages in Excel is the summarising step — the core of the data analysis process.'
+      },
+      {
+        q:'After completing an analysis, a manager writes: "Chocolate cake is our best-selling flavour every holiday season." This conclusion is part of which step?',
+        opts:['Gathering the data','Defining the objective','Summarising the data','Interpreting the results'],
+        ans:3, fb:'Drawing conclusions and making meaning from the analysis is the final step — interpreting the results.'
+      }
+    ]
+  },
+  {
+    key:'practical', label:'Section D — Practical: Sweet Layers Cake Co. 🎂',
+    badge:'badge-practical', badgeLabel:'Practical',
+    qs:[
+      {
+        tableCaption:'Sweet Layers Cake Co. — Monthly Sales Record',
+        tableData:[['Flavour','Units Sold','Price per Unit (₦)'],['🍓 Strawberry','45','2,500'],['🍫 Chocolate','72','2,800'],['🍦 Vanilla','38','2,200'],['❤️ Red Velvet','29','3,000'],['🍌 Banana','51','2,400']],
+        q:'Using the Sweet Layers sales table above, what is the <strong>total number of cakes</strong> sold that month?',
+        opts:['215','225','235','245'], ans:2, fb:'45 + 72 + 38 + 29 + 51 = 235 cakes sold in total.'
+      },
+      {
+        tableRef:true,
+        q:'Which flavour had the <strong>lowest</strong> number of units sold?',
+        opts:['Strawberry','Vanilla','Red Velvet','Banana'], ans:2, fb:'Red Velvet had only 29 units sold — the lowest of all five flavours.'
+      },
+      {
+        tableRef:true,
+        q:'The manager notices banana cake sales are highest every December. She uses this pattern to <strong>forecast</strong> high banana cake sales next December. What type of analysis is she performing?',
+        opts:['Descriptive analysis','Diagnostic analysis','Predictive analysis','Prescriptive analysis'],
+        ans:2, fb:'Using past patterns to forecast future events is predictive analysis.'
+      },
+      {
+        tableRef:true,
+        q:'The Sweet Layers dataset has a row where the sale date is entered as <strong>"32nd January"</strong>. What should be done with this entry?',
+        opts:['Leave it — it might be a special sale day','Copy it to a separate sheet for later','Correct or remove it during the data cleaning step','Use it in the final summary chart anyway'],
+        ans:2, fb:'"32nd January" is impossible — there is no 32nd day. This error must be corrected or removed during data cleaning.'
+      },
+      {
+        tableRef:true,
+        q:'Sweet Layers wants to understand <strong>WHY</strong> chocolate cake outsells every other flavour. Which type of analysis should they use?',
+        opts:['Descriptive analysis','Predictive analysis','Prescriptive analysis','Diagnostic analysis'],
+        ans:3, fb:'Diagnostic analysis investigates causes — it is the right tool for understanding WHY chocolate leads in sales.'
+      },
+      {
+        tableRef:true,
+        q:'Based on the sales table, the analysis team recommends a <strong>20% discount on Red Velvet</strong> cakes to boost sales next month. This recommendation is an example of <span class="blank">___________</span>.',
+        opts:['Descriptive analysis','Diagnostic analysis','Predictive analysis','Prescriptive analysis'],
+        ans:3, fb:'Prescriptive analysis goes beyond prediction — it recommends a specific action (the discount) to improve future outcomes.'
+      }
+    ]
+  }
+];
+
+const userAnswers = {};
+let submitted = false;
+let globalQNum = 0;
+const qMap = {};
+
+function buildTest() {
+  const container = document.getElementById('questionContainer');
+  container.innerHTML = '';
+  globalQNum = 0;
+
+  SECTIONS.forEach(section => {
+    const div = document.createElement('div');
+    div.className = 'section-div';
+    div.innerHTML = `<div class="section-div-line"></div><span class="section-div-label">${section.label}</span><div class="section-div-line"></div>`;
+    container.appendChild(div);
+
+    section.qs.forEach(item => {
+      globalQNum++;
+      const qn = globalQNum;
+      qMap[qn] = { section: section.key, ans: item.ans, opts: item.opts, fb: item.fb };
+
+      const card = document.createElement('div');
+      card.className = 'q-card';
+      card.id = `qcard-${qn}`;
+
+      let tableHTML = '';
+      if (item.tableData) {
+        const rows = item.tableData.map((r,ri) =>
+          ri === 0
+            ? `<tr>${r.map(c=>`<th>${c}</th>`).join('')}</tr>`
+            : `<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`
+        ).join('');
+        tableHTML = `<table class="sales-table" aria-label="${item.tableCaption}">
+          <caption style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-hint);text-align:left;padding-bottom:6px;">${item.tableCaption}</caption>
+          ${rows}</table>`;
+      }
+
+      const optsHTML = item.opts.map((o,i)=>`
+        <button class="opt-btn" id="q${qn}o${i}" onclick="selectOpt(${qn},${i})">
+          <span class="opt-letter">${LETTERS[i]}</span><span>${o}</span>
+        </button>`).join('');
+
+      card.innerHTML = `
+        <div class="q-meta">
+          <span class="q-num">Question ${qn} of 20</span>
+          <span class="q-badge ${section.badge}">${section.badgeLabel}</span>
+        </div>
+        ${tableHTML}
+        <div class="q-text">${item.q}</div>
+        <div class="options">${optsHTML}</div>
+        <div class="feedback" id="fb-${qn}"></div>`;
+
+      container.appendChild(card);
+    });
+  });
+}
+
+function selectOpt(qn, idx) {
+  if (submitted) return;
+  userAnswers[qn] = idx;
+  for (let i=0;i<4;i++) {
+    const b = document.getElementById(`q${qn}o${i}`);
+    if(b) b.classList.remove('selected');
+  }
+  document.getElementById(`q${qn}o${idx}`).classList.add('selected');
+  document.getElementById(`qcard-${qn}`).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = Object.keys(userAnswers).length;
+  const pct = Math.round(count/20*100);
+  document.getElementById('progLabel').textContent = `${count} of 20 answered`;
+  document.getElementById('progPct').textContent = `${pct}%`;
+  document.getElementById('progFill').style.width = pct+'%';
+}
+
+function validateInfo() {
+  const name = document.getElementById('studentName').value.trim();
+  const cls  = document.querySelector('input[name="studentClass"]:checked');
+  let ok = true;
+
+  const nameInput = document.getElementById('studentName');
+  const nameErr   = document.getElementById('nameError');
+  const classErr  = document.getElementById('classError');
+
+  if (!name) {
+    nameInput.classList.add('error'); nameErr.classList.add('show'); ok = false;
+  } else {
+    nameInput.classList.remove('error'); nameErr.classList.remove('show');
+  }
+  if (!cls) {
+    classErr.classList.add('show'); ok = false;
+  } else {
+    classErr.classList.remove('show');
+  }
+  return ok;
+}
+
+document.getElementById('studentName').addEventListener('input', function(){
+  if(this.value.trim()){ this.classList.remove('error'); document.getElementById('nameError').classList.remove('show'); }
+});
+document.querySelectorAll('input[name="studentClass"]').forEach(r =>
+  r.addEventListener('change', () => document.getElementById('classError').classList.remove('show'))
+);
+
+function submitTest() {
+  if (!validateInfo()) {
+    document.getElementById('infoCard').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  submitted = true;
+  document.getElementById('submitBtn').disabled = true;
+
+  // Lock info fields
+  document.getElementById('studentName').disabled = true;
+  document.querySelectorAll('input[name="studentClass"]').forEach(r => r.disabled = true);
+
+  const studentName  = document.getElementById('studentName').value.trim();
+  const studentClass = document.querySelector('input[name="studentClass"]:checked').value;
+
+  let correct = 0;
+  const sectionScores = {};
+  const answerLog = [];
+
+  for (let qn=1; qn<=20; qn++) {
+    const info = qMap[qn];
+    const userAns = userAnswers[qn];
+    const ok = (userAns !== undefined) && (userAns === info.ans);
+    if (ok) correct++;
+
+    if (!sectionScores[info.section]) sectionScores[info.section] = {c:0,t:0};
+    sectionScores[info.section].t++;
+    if (ok) sectionScores[info.section].c++;
+
+    answerLog.push(userAns !== undefined ? LETTERS[userAns] : '-');
+
+    for (let i=0;i<4;i++) {
+      const b = document.getElementById(`q${qn}o${i}`);
+      if(!b) continue;
+      b.classList.remove('selected'); b.disabled = true;
+      if(i===info.ans) b.classList.add('correct');
+      else if(userAns===i) b.classList.add('wrong');
+    }
+
+    const fb = document.getElementById(`fb-${qn}`);
+    const card = document.getElementById(`qcard-${qn}`);
+    card.classList.remove('answered');
+    if (ok) {
+      fb.className='feedback show fb-correct'; fb.innerHTML='✓ '+info.fb;
+      card.classList.add('correct-card');
+    } else {
+      fb.className='feedback show fb-wrong';
+      fb.innerHTML=`✗ Correct answer: (${LETTERS[info.ans]}) ${info.opts[info.ans]}. ${info.fb}`;
+      card.classList.add('wrong-card');
+    }
+  }
+
+  const skipped = 20 - Object.keys(userAnswers).length;
+  const wrong   = 20 - correct - skipped;
+  const pct     = Math.round(correct/20*100);
+  const grade   = getGrade(pct);
+
+  document.getElementById('scoreEmoji').textContent  = pct>=80?'🏆':pct>=60?'🎉':pct>=40?'📚':'💪';
+  document.getElementById('scorePupil').textContent  = `${studentName} · ${studentClass}`;
+  document.getElementById('scoreNum').textContent    = `${correct}/20`;
+  document.getElementById('scorePct').textContent    = `${pct}%`;
+  document.getElementById('scoreGrade').textContent  = grade;
+  document.getElementById('statC').textContent = correct;
+  document.getElementById('statW').textContent = wrong;
+  document.getElementById('statS').textContent = skipped;
+
+  const labels = {recall:'Sec A – Recall',understand:'Sec B – Understanding',apply:'Sec C – Application',practical:'Sec D – Practical'};
+  document.getElementById('breakdownGrid').innerHTML =
+    Object.entries(sectionScores).map(([k,v])=>`
+      <div class="breakdown-row">
+        <span class="breakdown-label">${labels[k]}</span>
+        <span class="breakdown-score">${v.c}/${v.t}</span>
+      </div>`).join('');
+
+  const panel = document.getElementById('scorePanel');
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth',block:'center'});
+
+  // Send to Google Sheets
+  const payload = {
+    name: studentName,
+    studentClass: studentClass,
+    score: correct,
+    pct: pct,
+    grade: grade,
+    secA: sectionScores['recall']     ? `${sectionScores['recall'].c}/${sectionScores['recall'].t}`         : '—',
+    secB: sectionScores['understand'] ? `${sectionScores['understand'].c}/${sectionScores['understand'].t}` : '—',
+    secC: sectionScores['apply']      ? `${sectionScores['apply'].c}/${sectionScores['apply'].t}`           : '—',
+    secD: sectionScores['practical']  ? `${sectionScores['practical'].c}/${sectionScores['practical'].t}`   : '—',
+    answers: answerLog.join(', ')
+  };
+
+  if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    const status = document.getElementById('subStatus');
+    status.className = 'sub-status sending show';
+    document.getElementById('subStatusText').textContent = 'Sending your results…';
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      status.className = 'sub-status success show';
+      document.getElementById('subStatusText').textContent = '✓ Results submitted to your teacher!';
+    })
+    .catch(() => {
+      status.className = 'sub-status failed show';
+      document.getElementById('subStatusText').textContent = '⚠️ Could not send results — please tell your teacher.';
+    });
+  }
+}
+
+function getGrade(pct) {
+  if(pct>=90) return 'Outstanding — Excellent work!';
+  if(pct>=75) return 'Very Good — Well done!';
+  if(pct>=60) return 'Good — Keep it up!';
+  if(pct>=40) return 'Fair — Review your notes and try again.';
+  return 'Needs more practice — Go over your class notes carefully.';
+}
+
+function resetTest() {
+  submitted = false;
+  for(const k in userAnswers) delete userAnswers[k];
+  document.getElementById('studentName').value = '';
+  document.getElementById('studentName').disabled = false;
+  document.querySelectorAll('input[name="studentClass"]').forEach(r => { r.checked=false; r.disabled=false; });
+  buildTest();
+  updateProgress();
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('scorePanel').classList.remove('show');
+  document.getElementById('subStatus').className = 'sub-status';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Hide setup banner if URL is already configured
+if (SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+  document.getElementById('setupBanner').style.display = 'none';
+}
+
+buildTest();
+updateProgress();
+</script>
+</body>
+</html>
